@@ -7,33 +7,27 @@ import javax.validation.constraints.NotNull;
 
 @Entity
 public class User extends AbstractEntity {
-
     @NotNull
     private String username;
 
     @NotNull
     private String pwHash;
 
- // GETTER FOR USERNAME
-    public String getUsername() {
-        return username;
-    }
-// NO ARG CONSTRUCTOR
-    public User() {
-    }
+    private static final BCryptPasswordEncoder encoder = new BCryptPasswordEncoder();
 
- // BCRYPT ENCODER
+    public User() {}
 
-    private static final BCryptPasswordEncoder encoder=new BCryptPasswordEncoder();
 
-// CONSTRUCTOR -PASSWORD ARGUMENT- ENCODE PASSWORD FIELD
-    public User(@NotNull String username, @NotNull String password) {
+    public User(String username, String password) {
         this.username = username;
         this.pwHash = encoder.encode(password);
     }
-// METHOD TO CHECK PASSWORDMATCH
-    public boolean isMatchingPassword(String password){
-        return encoder.matches(password,pwHash);
+
+    public String getUsername() {
+        return username;
+    }
+    public boolean isMatchingPassword(String password) {
+        return encoder.matches(password, pwHash);
     }
 
 }
